@@ -38,7 +38,7 @@ tab_pretty <- function(data) {
       locations = cells_column_labels()
     ) |>
     tab_options(
-      column_labels.background.color = "grey20",
+      column_labels.background.color = "#3D7A43",
       column_labels.font.weight = "bold",
       # row_group.background.color = "#F6F6F6"
     ) |> 

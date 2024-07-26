@@ -31,6 +31,8 @@ library(leaflet)
 library(forecast)
 library(plotly)
 library(gt)
+library(knitr)
+library(htmltools)
 
 source("utils.R")
 
@@ -78,75 +80,90 @@ leaflet(points) |>
 #   geom_point(aes(group = Id_Amostra), size = 1) +
 #   facet_wrap(~Estrato, scales = "free_y")
 
-estratos <- unique(df$Estrato)
-plots <- map(1:length(estratos), ~plot_estratos(df, estratos[.x]))
+
 ```
 :::{.column-page}
 :::{.panel-tabset}
-## Estrato 1
+
 ```{r}
-ggplotly(plots[[1]], tooltip = "text")
+#| warning: false
+#| output: asis
+
+
+estratos <- unique(df$Estrato)
+
+# for(i in estratos) {
+#   cat("##", i, "\n\n")
+#   print(htmltools::tagList(ggplotly(plot_estratos(df, i), tooltip = "text")))
+#   cat("\n\n")
+# }
+
+
+cat("##", estratos[1], "\n\n\n")
+tagList(ggplotly(plot_estratos(df, estratos[1]), tooltip = "text"))
+cat("\n\n")
+
+cat("##", estratos[2], "\n\n\n")
+tagList(ggplotly(plot_estratos(df, estratos[2]), tooltip = "text"))
+cat("\n\n")
+
+cat("##", estratos[3], "\n\n\n")
+tagList(ggplotly(plot_estratos(df, estratos[3]), tooltip = "text"))
+cat("\n\n")
+
+cat("##", estratos[4], "\n\n\n")
+tagList(ggplotly(plot_estratos(df, estratos[4]), tooltip = "text"))
+cat("\n\n")
+
+cat("##", estratos[5], "\n\n\n")
+tagList(ggplotly(plot_estratos(df, estratos[5]), tooltip = "text"))
+cat("\n\n")
+
+cat("##", estratos[6], "\n\n\n")
+tagList(ggplotly(plot_estratos(df, estratos[6]), tooltip = "text"))
+cat("\n\n")
+
+cat("##", estratos[7], "\n\n\n")
+tagList(ggplotly(plot_estratos(df, estratos[7]), tooltip = "text"))
+cat("\n\n")
+
+cat("##", estratos[8], "\n\n\n")
+tagList(ggplotly(plot_estratos(df, estratos[8]), tooltip = "text"))
+cat("\n\n")
+
+cat("##", estratos[9], "\n\n\n")
+tagList(ggplotly(plot_estratos(df, estratos[9]), tooltip = "text"))
+cat("\n\n")
+
+cat("##", estratos[10], "\n\n\n")
+tagList(ggplotly(plot_estratos(df, estratos[10]), tooltip = "text"))
+cat("\n\n")
+
+cat("##", estratos[11], "\n\n\n")
+tagList(ggplotly(plot_estratos(df, estratos[11]), tooltip = "text"))
+cat("\n\n")
+
+cat("##", estratos[12], "\n\n\n")
+tagList(ggplotly(plot_estratos(df, estratos[12]), tooltip = "text"))
+cat("\n\n")
+
+cat("##", estratos[13], "\n\n\n")
+tagList(ggplotly(plot_estratos(df, estratos[13]), tooltip = "text"))
+cat("\n\n")
+
+cat("##", estratos[14], "\n\n\n")
+tagList(ggplotly(plot_estratos(df, estratos[14]), tooltip = "text"))
+cat("\n\n")
+
+cat("##", estratos[15], "\n\n\n")
+tagList(ggplotly(plot_estratos(df, estratos[15]), tooltip = "text"))
+cat("\n\n")
+
+cat("##", estratos[16], "\n\n\n")
+tagList(ggplotly(plot_estratos(df, estratos[16]), tooltip = "text"))
+cat("\n\n")
 ```
-## Estrato 2
-```{r}
-ggplotly(plots[[2]], tooltip = "text")
-```
-## Estrato 3
-```{r}
-ggplotly(plots[[3]], tooltip = "text")
-```
-## Estrato 4
-```{r}
-ggplotly(plots[[4]], tooltip = "text")
-```
-## Estrato 5
-```{r}
-ggplotly(plots[[5]], tooltip = "text")
-```
-## Estrato 6
-```{r}
-ggplotly(plots[[6]], tooltip = "text")
-```
-## Estrato 7
-```{r}
-ggplotly(plots[[7]], tooltip = "text")
-```
-## Estrato 8
-```{r}
-ggplotly(plots[[8]], tooltip = "text")
-```
-## Estrato 9
-```{r}
-ggplotly(plots[[9]], tooltip = "text")
-```
-## Estrato 10
-```{r}
-ggplotly(plots[[10]], tooltip = "text")
-```
-## Estrato 11
-```{r}
-ggplotly(plots[[11]], tooltip = "text")
-```
-## Estrato 12
-```{r}
-ggplotly(plots[[12]], tooltip = "text")
-```
-## Estrato 13
-```{r}
-ggplotly(plots[[13]], tooltip = "text")
-```
-## Estrato 14
-```{r}
-ggplotly(plots[[14]], tooltip = "text")
-```
-## Estrato 15
-```{r}
-ggplotly(plots[[15]], tooltip = "text")
-```
-## Estrato 16
-```{r}
-ggplotly(plots[[16]], tooltip = "text")
-```
+
 :::
 :::
 
@@ -167,26 +184,30 @@ df |>
 ```
 :::
 
-## Variação, Outliers e Falhas
+## Outliers e Falhas
+
+<!-- ```{r} -->
+<!-- df |>  -->
+<!--   group_by(Amostra, Estrato) |>  -->
+<!--   summarise(Variação = var(`DAP (cm)`), Desvio = sd(`DAP (cm)`)) |>  -->
+<!--   ungroup() |>  -->
+<!--   slice_max(Variação, n = 10) |>  -->
+<!--   group_by(Estrato) |>  -->
+<!--   gt() |>  -->
+<!--   tab_pretty() |>  -->
+<!--   fmt_integer(1) |>  -->
+<!--   tab_options(row_group.as_column = T) |>  -->
+<!--   tab_style( -->
+<!--       style = "vertical-align:middle", -->
+<!--       locations = gt::cells_row_groups() -->
+<!--     ) -->
+<!-- ``` -->
+
+
 
 ```{r}
-df |> 
-  group_by(Amostra, Estrato) |> 
-  summarise(Variação = var(`DAP (cm)`), Desvio = sd(`DAP (cm)`)) |> 
-  ungroup() |> 
-  slice_max(Variação, n = 10) |> 
-  group_by(Estrato) |> 
-  gt() |> 
-  tab_pretty() |> 
-  fmt_integer(1) |> 
-  tab_options(row_group.as_column = T) |> 
-  tab_style(
-      style = "vertical-align:middle",
-      locations = gt::cells_row_groups()
-    )
-```
+#| warning: false
 
-```{r}
 df |>
   group_by(Estrato, Amostra) |>
   arrange(`DAP (cm)`) |>
@@ -194,17 +215,11 @@ df |>
   ungroup() |>
   filter(nliers > 10) |>
   group_by(Estrato) |>
-  arrange(-nliers) |> 
-  rename("Nº de Outliers" = nliers) |> 
-  gt() |> 
-  tab_pretty() |> 
-  tab_options(row_group.as_column = T) |> 
-  fmt_integer(c(2,3), use_seps = F) |> 
-  tab_style(
-      style = "vertical-align:middle",
-      locations = gt::cells_row_groups()
-    )
+  arrange(-nliers) |>
+  rename("Nº de Outliers" = nliers) |>
+  gt() |>
+  tab_pretty() |>
+  tab_options(row_group.as_column = T) |>
+  fmt_integer(c(2, 3), use_seps = F) |>
+  tab_style(style = "vertical-align:middle", locations = gt::cells_row_groups())
 ```
-
-
-
