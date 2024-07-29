@@ -4,14 +4,16 @@ plot_estratos <- function(df, estratos) {
     df |>
     filter(year(Data_Medicao) == 2024) |>
     filter(Estrato == estratos) |>
+    mutate(Amostra = as.character(Amostra)) |> 
     ggplot(aes(Data_Medicao, `DAP (cm)`)) +
-    geom_line(aes(group = Id_Amostra, color = Id_Amostra), show.legend = F) +
+    geom_line(aes(group = Amostra, color = Amostra), show.legend = F) +
     geom_point(
       aes(
-        group = Id_Amostra,
+        group = Amostra,
+        color = Amostra,
         text = sprintf(
           "Amostra: %s<br>MatGen: %d <br>Data: %s<br>MAC: %s<br>DAP (cm): %f<br>Altura (m): %f",
-          Id_Amostra,
+          Amostra,
           Material_Genetico,
           Data_Medicao,
           MAC,
@@ -19,8 +21,8 @@ plot_estratos <- function(df, estratos) {
           `Altura (m)`
         )
       ),
-      color = "grey20",
-      size = 1
+      size = 1,
+      alpha = 0.5
     ) +
     theme_minimal() +
     labs(title = estratos, x = "Data da Medição")
