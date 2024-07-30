@@ -1,0 +1,15 @@
+project: 
+  type: website
+  output-dir: docs
+
+css: styles.css
+format: 
+  html:
+    embed-resources: true
+    smooth-scroll: true
+    theme: cosmo
+    fontcolor: black
+    toc: true
+    toc-location: left
+    toc-title: Sumário
+    toc-depth: 2

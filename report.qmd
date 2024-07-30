@@ -7,17 +7,6 @@ author:
 date: last-modified
 title-block-banner: true
 title-block-banner-color: "#3D7A43"
-format: 
-  html:
-    embed-resources: true
-    smooth-scroll: true
-    theme: cosmo
-    fontcolor: black
-    toc: true
-    toc-location: left
-    toc-title: Sumário
-    toc-depth: 2
-css: styles.css
 bibliography: biblio.bib
 execute: 
   echo: false
@@ -37,7 +26,7 @@ library(gt)
 library(knitr)
 library(htmltools)
 
-source("utils.R")
+source("R/utils.R")
 
 options(scipen = 999)
 
@@ -147,7 +136,7 @@ Os *outliers* são detectados utilizando a metodologia de análise de séries te
 gaps <-
   df |> 
   filter(year(Data_Medicao) == 2024) |> 
-  group_by(Estrato, Amostra) |> 
+  group_by(Fazenda, Amostra) |> 
   arrange(Data_Medicao) |> 
   mutate(gap = as.numeric(Data_Medicao - lag(Data_Medicao)),
          is.gap = if_else(gap >= 4, T, F)) |> 
@@ -156,13 +145,13 @@ gaps <-
 liers <-
   df |>
   filter(year(Data_Medicao) == 2024) |>
-  group_by(Estrato, Amostra) |>
+  group_by(Fazenda, Amostra) |>
   arrange(`DAP (cm)`) |>
   summarise(nliers = length(tsoutliers(`DAP (cm)`)$index)) |>
   ungroup()
 
-full_join(liers, gaps, by = c("Estrato" = "Estrato", "Amostra" = "Amostra")) |> 
-  mutate(across(c(Amostra, Estrato), as.factor)) |> 
+full_join(liers, gaps, by = c("Fazenda" = "Fazenda", "Amostra" = "Amostra")) |> 
+  mutate(across(c(Amostra, Fazenda), as.factor)) |> 
   rename("N° de Outliers" = nliers, "N° de Gaps" = gaps) |> 
   DT::datatable(class = "cell-border stripe", 
                 filter = list(position = "top", clear = F))
@@ -170,13 +159,69 @@ full_join(liers, gaps, by = c("Estrato" = "Estrato", "Amostra" = "Amostra")) |>
 
 :::
 
+## Desempenho
+
 ::: {.column-body-outset}
 
 ```{r}
-idades <-   
+indic <-
   df |> 
-  filter(year(Data_Medicao) == 2024) |> 
-  group_by(Estrato, Amostra, MAC) |> 
+  filter(Data_Medicao >= "2024-05-01" & Data_Medicao <= today()) |> 
+  group_by(Estrato, Amostra) |> 
+  summarise(
+    medicoes = n(),
+    esperado = round(as.numeric(today() - min(Data_Medicao))/3)
+  ) |> 
+  ungroup()
+  
+barplot <-
+  indic |> 
+  summarise(
+    .by = Estrato, 
+    real = sum(medicoes), 
+    exp = sum(esperado)
+  ) |> 
+  rename("Esperado" = exp, "Real" = real) |> 
+  pivot_longer(-Estrato) |> 
+  ggplot(aes(value, reorder(Estrato, value), fill = name)) +
+  geom_col(
+    position = "dodge",
+    alpha = 0.75,
+    aes(text = sprintf("%s<br>N° de Medições: %d", name, value))
+  ) +
+  labs(fill = NULL, x = "N° de Medições", y = NULL) +
+  scale_fill_manual(values = c("lightgreen", "darkgreen")) +
+  theme_minimal()
+
+bar_ly <- ggplotly(barplot, tooltip = "text")
+
+bar_ly
+```
+
+:::
+
+## Distribuição
+
+:::{.column-body-outset}
+```{r}
+box <-  
+  df |> 
+  filter(Data_Medicao >= "2024-05-01" & Data_Medicao <= today()) |> 
+  ggplot(aes(reorder(Estrato, `DAP (cm)`), `DAP (cm)`)) +
+  geom_boxplot(color = "darkgreen", alpha = 0) +
+  coord_flip() +
+  theme_minimal() +
+  labs(x = NULL)
+
+box_ly <- ggplotly(box)
+box_ly$x$data[[1]]$marker$line$color = "lightgreen"
+box_ly$x$data[[1]]$marker$outliercolor = "lightgreen"
+box_ly$x$data[[1]]$marker$color = "lightgreen"
+
+idades <-
+  df |>
+  filter(year(Data_Medicao) == 2024) |>
+  group_by(Estrato, Amostra, MAC) |>
   summarise(idade = as.numeric(max(Data_Medicao) - min(Data_Medicao)))
 
 dens <-
@@ -188,7 +233,7 @@ dens <-
     aes(
       x = idade,
       y = after_stat(density),
-      text = sprintf("Densidade: %.2f%%<br>Idade: %.2f dias",
+      text = sprintf("Densidade: %.2f%%<br>Tempor de Operação: %.2f dias",
                      after_stat(density) * 100, x)
     )
   ) +
@@ -198,13 +243,7 @@ dens <-
 
 dens_ly <- ggplotly(dens, tooltip = "text")
 
-df |> 
-  filter(year(Data_Medicao) == 2024,
-         Data_Medicao > "2024-05-01" & Data_Medicao < today()) 
-  
-
-idade_ly <- ggplotly(idades_med, tooltip = "text")
-
-subplot(idade_ly, dens_ly, nrows = 1, margin = 0.07)
+subplot(box_ly, dens_ly,nrows = 1, margin = 0.07)
 ```
+
 :::
