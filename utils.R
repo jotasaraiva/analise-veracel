@@ -21,8 +21,10 @@ plot_estratos <- function(df, estratos) {
           `Altura (m)`
         )
       ),
-      size = 1,
-      alpha = 0.5
+      fill = "black",
+      stroke = 0.25,
+      shape = 21,
+      size = 1
     ) +
     theme_minimal() +
     labs(title = estratos, x = "Data da Medição")

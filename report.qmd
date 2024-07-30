@@ -18,6 +18,7 @@ format:
     toc-title: Sumário
     toc-depth: 2
 css: styles.css
+bibliography: biblio.bib
 execute: 
   echo: false
   warning: false
@@ -51,9 +52,12 @@ df <-
 
 ## Distribuição espacial
 
-
+A companhia Veracel Celulose, como cliente da Treevia Forest Technologies, possui atualmente `r length(unique(df$Plantio))` plantios e `r length(unique(df$Id_Amostra))` amostras operantes em seu projeto. A localização geográfica das amostras está demonstrada na @fig-map.
 
 ```{r}
+#| label: fig-map
+#| fig-cap: Distribuição das amostras - Veracel
+
 points <- 
   data |> 
   count(Estrato, Amostra, Coordenada_X, Coordenada_Y) |> 
@@ -72,14 +76,25 @@ leaflet(points) |>
   addMarkers(label = labels)
 ```
 
-## Periodicidade
+## Periodicidade {#sec-period}
+
+A fim de analisar a periodicidade dos dados dendrométricos coletados pelos sensores, os gráficos a seguir podem ser utilizados para observar as frequências segregadas por estrato. Visto que o período previsto de coleta é de três dias entre medições, é evidente que o estrato **`r unique(df$Estrato)[1]`** dispõe do comportamento mais anômalo em questão da frequência de coleta em campo. 
+
+Entre outros estratos com comportamentos irregulares, estão:
+
+- **`r unique(df$Estrato)[3]`**: a amostra 2522 está tem uma maioria de dados faltantes;
+- **`r unique(df$Estrato)[13]`**: a amostra 10232628 possui uma grande quantidade de dados faltantes e uma mudança brusca em sua última medição;
+- **`r unique(df$Estrato)[14]`**: a 10232614 possui uma grande quantidade de dados faltantes em suas primeiras medições;
+- **`r unique(df$Estrato)[15]`**: a amostra 5 possui apenas 3 observações;
+- **`r unique(df$Estrato)[16]`**: as amostra 8939, 8941 e 8942 possui diversas medições faltantes antes de 19/04/2024 e a amostra 8938 possui apenas duas medições.
+
 
 :::{.column-page}
 :::{.panel-tabset}
 
 ```{r results='asis'}
 #| warning: false
-#| 
+#| fig-cap: Evolução das medições por estrato
 
 estratos <- unique(df$Estrato)
 
@@ -92,105 +107,42 @@ for(i in estratos) {
 }
 ```
 
-
-<!-- ```{r} -->
-<!-- #| warning: false -->
-<!-- #| output: asis -->
-
-
-<!-- estratos <- unique(df$Estrato) -->
-
-<!-- cat("##", estratos[1], "\n\n\n") -->
-<!-- tagList(ggplotly(plot_estratos(df, estratos[1]), tooltip = "text")) -->
-<!-- cat("\n\n") -->
-
-<!-- cat("##", estratos[2], "\n\n\n") -->
-<!-- tagList(ggplotly(plot_estratos(df, estratos[2]), tooltip = "text")) -->
-<!-- cat("\n\n") -->
-
-<!-- cat("##", estratos[3], "\n\n\n") -->
-<!-- tagList(ggplotly(plot_estratos(df, estratos[3]), tooltip = "text")) -->
-<!-- cat("\n\n") -->
-
-<!-- cat("##", estratos[4], "\n\n\n") -->
-<!-- tagList(ggplotly(plot_estratos(df, estratos[4]), tooltip = "text")) -->
-<!-- cat("\n\n") -->
-
-<!-- cat("##", estratos[5], "\n\n\n") -->
-<!-- tagList(ggplotly(plot_estratos(df, estratos[5]), tooltip = "text")) -->
-<!-- cat("\n\n") -->
-
-<!-- cat("##", estratos[6], "\n\n\n") -->
-<!-- tagList(ggplotly(plot_estratos(df, estratos[6]), tooltip = "text")) -->
-<!-- cat("\n\n") -->
-
-<!-- cat("##", estratos[7], "\n\n\n") -->
-<!-- tagList(ggplotly(plot_estratos(df, estratos[7]), tooltip = "text")) -->
-<!-- cat("\n\n") -->
-
-<!-- cat("##", estratos[8], "\n\n\n") -->
-<!-- tagList(ggplotly(plot_estratos(df, estratos[8]), tooltip = "text")) -->
-<!-- cat("\n\n") -->
-
-<!-- cat("##", estratos[9], "\n\n\n") -->
-<!-- tagList(ggplotly(plot_estratos(df, estratos[9]), tooltip = "text")) -->
-<!-- cat("\n\n") -->
-
-<!-- cat("##", estratos[10], "\n\n\n") -->
-<!-- tagList(ggplotly(plot_estratos(df, estratos[10]), tooltip = "text")) -->
-<!-- cat("\n\n") -->
-
-<!-- cat("##", estratos[11], "\n\n\n") -->
-<!-- tagList(ggplotly(plot_estratos(df, estratos[11]), tooltip = "text")) -->
-<!-- cat("\n\n") -->
-
-<!-- cat("##", estratos[12], "\n\n\n") -->
-<!-- tagList(ggplotly(plot_estratos(df, estratos[12]), tooltip = "text")) -->
-<!-- cat("\n\n") -->
-
-<!-- cat("##", estratos[13], "\n\n\n") -->
-<!-- tagList(ggplotly(plot_estratos(df, estratos[13]), tooltip = "text")) -->
-<!-- cat("\n\n") -->
-
-<!-- cat("##", estratos[14], "\n\n\n") -->
-<!-- tagList(ggplotly(plot_estratos(df, estratos[14]), tooltip = "text")) -->
-<!-- cat("\n\n") -->
-
-<!-- cat("##", estratos[15], "\n\n\n") -->
-<!-- tagList(ggplotly(plot_estratos(df, estratos[15]), tooltip = "text")) -->
-<!-- cat("\n\n") -->
-
-<!-- cat("##", estratos[16], "\n\n\n") -->
-<!-- tagList(ggplotly(plot_estratos(df, estratos[16]), tooltip = "text")) -->
-<!-- cat("\n\n") -->
-<!-- ``` -->
-
 :::
 :::
 
-## Datas erradas
+## Datas irregulares
+
+A @tbl-dates demonstra os estratos, amostras e respectivos dispositivos com medições com datas de medições irregulares (ocorreram fora de 2024). As amostras com problemáticas podem ser observadas nos gráficos da @sec-period.
+
 :::{.column-body-outset}
 ```{r}
-df |>
-  filter(year(Data_Medicao) != 2024) |>
-  select(Fazenda,
-         Estrato,
-         Talhao,
-         Data_Medicao,
-         Data_Plantio,
-         Amostra,
-         MAC,
-         `DAP (cm)`) |>
-  DT::datatable()
+#| label: tbl-dates
+#| tbl-cap: Datas irregulares
+
+df |> 
+  filter(year(Data_Medicao) != 2024) |> 
+  group_by(Fazenda, Estrato, Amostra, MAC) |> 
+  summarise(nliers = n()) |> 
+  ungroup() |> 
+  gt() |> 
+  tab_pretty() |> 
+  cols_label(nliers = "N° de Datas irregulares") |> 
+  fmt_integer(use_seps = F)
 ```
 :::
 
 ## Outliers e Falhas
 
+Os *gaps* e falhas operacionais são detectados são detectados a partir do agrupamento dos dados de medições por estratos e amostras. Os *gaps* são contabilizados por meio da contagem de lacunas maiores ou iguais a 4 dias nas séries temporais de cada amostra.
+
+Os *outliers* são detectados utilizando a metodologia de análise de séries temporais descrita em @hyndman2021 para detecção de anomalias, implementada em linguagem R no pacote [`forecast`](https://pkg.robjhyndman.com/forecast/reference/tsoutliers.html). A @tbl-gaps demonstra os resultados:
+
 :::{.column-body-outset}
 
 ```{r}
 #| warning: false
+#| tbl-cap: Outliers e gaps
+#| label: tbl-gaps
 
 gaps <-
   df |> 
@@ -198,7 +150,7 @@ gaps <-
   group_by(Estrato, Amostra) |> 
   arrange(Data_Medicao) |> 
   mutate(gap = as.numeric(Data_Medicao - lag(Data_Medicao)),
-         is.gap = if_else(gap >= 9, T, F)) |> 
+         is.gap = if_else(gap >= 4, T, F)) |> 
   summarise(gaps = sum(is.gap, na.rm = T))
 
 liers <-
@@ -210,8 +162,10 @@ liers <-
   ungroup()
 
 full_join(liers, gaps, by = c("Estrato" = "Estrato", "Amostra" = "Amostra")) |> 
+  mutate(across(c(Amostra, Estrato), as.factor)) |> 
   rename("N° de Outliers" = nliers, "N° de Gaps" = gaps) |> 
-  DT::datatable()
+  DT::datatable(class = "cell-border stripe", 
+                filter = list(position = "top", clear = F))
 ```
 
 :::
@@ -234,7 +188,7 @@ dens <-
     aes(
       x = idade,
       y = after_stat(density),
-      text = sprintf("Densidade: %.2f%%<br>Idade: %.2f",
+      text = sprintf("Densidade: %.2f%%<br>Idade: %.2f dias",
                      after_stat(density) * 100, x)
     )
   ) +
@@ -244,21 +198,10 @@ dens <-
 
 dens_ly <- ggplotly(dens, tooltip = "text")
 
-idades_med <-
-  idades |>
-  ungroup() |>
-  group_by(Estrato) |>
-  summarise(mean = mean(idade),
-            n_devc = ordered(n(), levels = c(9, 10, 11))) |>
-  ggplot(aes(mean, Estrato)) +
-  geom_col(
-    alpha = 0.75,
-    fill = "darkgreen",
-    aes(text = sprintf("N° de Sensores: %s<br>Tempo médio: %.2f dias", 
-                       n_devc, mean))
-  ) +
-  theme_minimal() +
-  labs(x = "Dias", y = NULL, fill = "N° de Sensores")
+df |> 
+  filter(year(Data_Medicao) == 2024,
+         Data_Medicao > "2024-05-01" & Data_Medicao < today()) 
+  
 
 idade_ly <- ggplotly(idades_med, tooltip = "text")
 
