@@ -22,6 +22,8 @@ execute:
   echo: false
   warning: false
 lang: "pt-br"
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r}
@@ -49,6 +51,8 @@ df <-
 
 ## Distribuição espacial
 
+
+
 ```{r}
 points <- 
   data |> 
@@ -73,83 +77,99 @@ leaflet(points) |>
 :::{.column-page}
 :::{.panel-tabset}
 
-```{r}
+```{r results='asis'}
 #| warning: false
-#| output: asis
-
+#| 
 
 estratos <- unique(df$Estrato)
 
-cat("##", estratos[1], "\n\n\n")
-tagList(ggplotly(plot_estratos(df, estratos[1]), tooltip = "text"))
-cat("\n\n")
-
-cat("##", estratos[2], "\n\n\n")
-tagList(ggplotly(plot_estratos(df, estratos[2]), tooltip = "text"))
-cat("\n\n")
-
-cat("##", estratos[3], "\n\n\n")
-tagList(ggplotly(plot_estratos(df, estratos[3]), tooltip = "text"))
-cat("\n\n")
-
-cat("##", estratos[4], "\n\n\n")
-tagList(ggplotly(plot_estratos(df, estratos[4]), tooltip = "text"))
-cat("\n\n")
-
-cat("##", estratos[5], "\n\n\n")
-tagList(ggplotly(plot_estratos(df, estratos[5]), tooltip = "text"))
-cat("\n\n")
-
-cat("##", estratos[6], "\n\n\n")
-tagList(ggplotly(plot_estratos(df, estratos[6]), tooltip = "text"))
-cat("\n\n")
-
-cat("##", estratos[7], "\n\n\n")
-tagList(ggplotly(plot_estratos(df, estratos[7]), tooltip = "text"))
-cat("\n\n")
-
-cat("##", estratos[8], "\n\n\n")
-tagList(ggplotly(plot_estratos(df, estratos[8]), tooltip = "text"))
-cat("\n\n")
-
-cat("##", estratos[9], "\n\n\n")
-tagList(ggplotly(plot_estratos(df, estratos[9]), tooltip = "text"))
-cat("\n\n")
-
-cat("##", estratos[10], "\n\n\n")
-tagList(ggplotly(plot_estratos(df, estratos[10]), tooltip = "text"))
-cat("\n\n")
-
-cat("##", estratos[11], "\n\n\n")
-tagList(ggplotly(plot_estratos(df, estratos[11]), tooltip = "text"))
-cat("\n\n")
-
-cat("##", estratos[12], "\n\n\n")
-tagList(ggplotly(plot_estratos(df, estratos[12]), tooltip = "text"))
-cat("\n\n")
-
-cat("##", estratos[13], "\n\n\n")
-tagList(ggplotly(plot_estratos(df, estratos[13]), tooltip = "text"))
-cat("\n\n")
-
-cat("##", estratos[14], "\n\n\n")
-tagList(ggplotly(plot_estratos(df, estratos[14]), tooltip = "text"))
-cat("\n\n")
-
-cat("##", estratos[15], "\n\n\n")
-tagList(ggplotly(plot_estratos(df, estratos[15]), tooltip = "text"))
-cat("\n\n")
-
-cat("##", estratos[16], "\n\n\n")
-tagList(ggplotly(plot_estratos(df, estratos[16]), tooltip = "text"))
-cat("\n\n")
+for(i in estratos) {
+  cat("##",i, "\n\n\n")
+  
+  print(tagList(ggplotly(plot_estratos(df, i), tooltip = "text")))
+  
+  cat("\n\n")
+}
 ```
+
+
+<!-- ```{r} -->
+<!-- #| warning: false -->
+<!-- #| output: asis -->
+
+
+<!-- estratos <- unique(df$Estrato) -->
+
+<!-- cat("##", estratos[1], "\n\n\n") -->
+<!-- tagList(ggplotly(plot_estratos(df, estratos[1]), tooltip = "text")) -->
+<!-- cat("\n\n") -->
+
+<!-- cat("##", estratos[2], "\n\n\n") -->
+<!-- tagList(ggplotly(plot_estratos(df, estratos[2]), tooltip = "text")) -->
+<!-- cat("\n\n") -->
+
+<!-- cat("##", estratos[3], "\n\n\n") -->
+<!-- tagList(ggplotly(plot_estratos(df, estratos[3]), tooltip = "text")) -->
+<!-- cat("\n\n") -->
+
+<!-- cat("##", estratos[4], "\n\n\n") -->
+<!-- tagList(ggplotly(plot_estratos(df, estratos[4]), tooltip = "text")) -->
+<!-- cat("\n\n") -->
+
+<!-- cat("##", estratos[5], "\n\n\n") -->
+<!-- tagList(ggplotly(plot_estratos(df, estratos[5]), tooltip = "text")) -->
+<!-- cat("\n\n") -->
+
+<!-- cat("##", estratos[6], "\n\n\n") -->
+<!-- tagList(ggplotly(plot_estratos(df, estratos[6]), tooltip = "text")) -->
+<!-- cat("\n\n") -->
+
+<!-- cat("##", estratos[7], "\n\n\n") -->
+<!-- tagList(ggplotly(plot_estratos(df, estratos[7]), tooltip = "text")) -->
+<!-- cat("\n\n") -->
+
+<!-- cat("##", estratos[8], "\n\n\n") -->
+<!-- tagList(ggplotly(plot_estratos(df, estratos[8]), tooltip = "text")) -->
+<!-- cat("\n\n") -->
+
+<!-- cat("##", estratos[9], "\n\n\n") -->
+<!-- tagList(ggplotly(plot_estratos(df, estratos[9]), tooltip = "text")) -->
+<!-- cat("\n\n") -->
+
+<!-- cat("##", estratos[10], "\n\n\n") -->
+<!-- tagList(ggplotly(plot_estratos(df, estratos[10]), tooltip = "text")) -->
+<!-- cat("\n\n") -->
+
+<!-- cat("##", estratos[11], "\n\n\n") -->
+<!-- tagList(ggplotly(plot_estratos(df, estratos[11]), tooltip = "text")) -->
+<!-- cat("\n\n") -->
+
+<!-- cat("##", estratos[12], "\n\n\n") -->
+<!-- tagList(ggplotly(plot_estratos(df, estratos[12]), tooltip = "text")) -->
+<!-- cat("\n\n") -->
+
+<!-- cat("##", estratos[13], "\n\n\n") -->
+<!-- tagList(ggplotly(plot_estratos(df, estratos[13]), tooltip = "text")) -->
+<!-- cat("\n\n") -->
+
+<!-- cat("##", estratos[14], "\n\n\n") -->
+<!-- tagList(ggplotly(plot_estratos(df, estratos[14]), tooltip = "text")) -->
+<!-- cat("\n\n") -->
+
+<!-- cat("##", estratos[15], "\n\n\n") -->
+<!-- tagList(ggplotly(plot_estratos(df, estratos[15]), tooltip = "text")) -->
+<!-- cat("\n\n") -->
+
+<!-- cat("##", estratos[16], "\n\n\n") -->
+<!-- tagList(ggplotly(plot_estratos(df, estratos[16]), tooltip = "text")) -->
+<!-- cat("\n\n") -->
+<!-- ``` -->
 
 :::
 :::
 
 ## Datas erradas
-:::{.column-page}
+:::{.column-body-outset}
 ```{r}
 df |>
   filter(year(Data_Medicao) != 2024) |>
@@ -167,49 +187,81 @@ df |>
 
 ## Outliers e Falhas
 
+:::{.column-body-outset}
+
 ```{r}
 #| warning: false
 
-df |> 
+gaps <-
+  df |> 
   filter(year(Data_Medicao) == 2024) |> 
   group_by(Estrato, Amostra) |> 
   arrange(Data_Medicao) |> 
   mutate(gap = as.numeric(Data_Medicao - lag(Data_Medicao)),
-         is.gap = if_else(gap >= 15, T, F)) |> 
-  summarise(gaps = sum(is.gap, na.rm = T)) |> 
-  filter(gaps > 0) |> 
-  arrange(-gaps) |> 
-  gt() |> 
-  tab_pretty() |> 
-  tab_options(row_group.as_column = T) |>
-  cols_label(gaps = "N° de Gaps") |> 
-  tab_style(
-      style = "vertical-align:middle",
-      locations = gt::cells_row_groups()
-    ) |> 
-  fmt_integer(use_seps = F) |> 
-  opt_vertical_padding(scale = 0.25)
-  
-  
-```
+         is.gap = if_else(gap >= 9, T, F)) |> 
+  summarise(gaps = sum(is.gap, na.rm = T))
 
-
-```{r}
-#| warning: false
-
-df |>
+liers <-
+  df |>
+  filter(year(Data_Medicao) == 2024) |>
   group_by(Estrato, Amostra) |>
   arrange(`DAP (cm)`) |>
   summarise(nliers = length(tsoutliers(`DAP (cm)`)$index)) |>
-  ungroup() |>
-  filter(nliers > 10) |>
-  group_by(Estrato) |>
-  arrange(-nliers) |>
-  rename("Nº de Outliers" = nliers) |>
-  gt() |>
-  tab_pretty() |>
-  tab_options(row_group.as_column = T) |>
-  fmt_integer(c(2, 3), use_seps = F) |>
-  tab_style(style = "vertical-align:middle", locations = gt::cells_row_groups()) |> 
-  opt_vertical_padding(scale = 0.25)
+  ungroup()
+
+full_join(liers, gaps, by = c("Estrato" = "Estrato", "Amostra" = "Amostra")) |> 
+  rename("N° de Outliers" = nliers, "N° de Gaps" = gaps) |> 
+  DT::datatable()
 ```
+
+:::
+
+::: {.column-body-outset}
+
+```{r}
+idades <-   
+  df |> 
+  filter(year(Data_Medicao) == 2024) |> 
+  group_by(Estrato, Amostra, MAC) |> 
+  summarise(idade = as.numeric(max(Data_Medicao) - min(Data_Medicao)))
+
+dens <-
+  ggplot(idades) +
+  geom_density(
+    fill = "green",
+    color = "darkgreen",
+    alpha = 0.25,
+    aes(
+      x = idade,
+      y = after_stat(density),
+      text = sprintf("Densidade: %.2f%%<br>Idade: %.2f",
+                     after_stat(density) * 100, x)
+    )
+  ) +
+  scale_y_continuous(labels = scales::percent) +
+  theme_minimal() +
+  labs(x = "Tempo de operação", y = "Densidade")
+
+dens_ly <- ggplotly(dens, tooltip = "text")
+
+idades_med <-
+  idades |>
+  ungroup() |>
+  group_by(Estrato) |>
+  summarise(mean = mean(idade),
+            n_devc = ordered(n(), levels = c(9, 10, 11))) |>
+  ggplot(aes(mean, Estrato)) +
+  geom_col(
+    alpha = 0.75,
+    fill = "darkgreen",
+    aes(text = sprintf("N° de Sensores: %s<br>Tempo médio: %.2f dias", 
+                       n_devc, mean))
+  ) +
+  theme_minimal() +
+  labs(x = "Dias", y = NULL, fill = "N° de Sensores")
+
+idade_ly <- ggplotly(idades_med, tooltip = "text")
+
+subplot(idade_ly, dens_ly, nrows = 1, margin = 0.07)
+```
+:::
