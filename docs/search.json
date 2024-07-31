@@ -7,8 +7,8 @@
     "text": "A companhia Veracel Celulose, como cliente da Treevia Forest Technologies, possui atualmente 11 plantios e 150 amostras operantes em seu projeto. A localização geográfica das amostras está demonstrada na Figura 1.\n\n\n\n\n\n\n\n\nFigura 1: Distribuição das amostras - Veracel"
   },
   {
-    "objectID": "report.html#distribuição-espacial",
-    "href": "report.html#distribuição-espacial",
+    "objectID": "report.html#sec-geo",
+    "href": "report.html#sec-geo",
     "title": "Análise de Sensores IoTs - Veracel",
     "section": "",
     "text": "A companhia Veracel Celulose, como cliente da Treevia Forest Technologies, possui atualmente 11 plantios e 150 amostras operantes em seu projeto. A localização geográfica das amostras está demonstrada na Figura 1.\n\n\n\n\n\n\n\n\nFigura 1: Distribuição das amostras - Veracel"
@@ -18,34 +18,34 @@
     "href": "report.html#sec-period",
     "title": "Análise de Sensores IoTs - Veracel",
     "section": "Periodicidade",
-    "text": "Periodicidade\nA fim de analisar a periodicidade dos dados dendrométricos coletados pelos sensores, os gráficos a seguir podem ser utilizados para observar as frequências segregadas por estrato. Visto que o período previsto de coleta é de três dias entre medições, é evidente que o estrato 22 - 2024 Jatobá 007-01 dispõe do comportamento mais anômalo em questão da frequência de coleta em campo.\nEntre outros estratos com comportamentos irregulares, estão:\n\n24 - 2024 Jenipapo_002-01: a amostra 2522 está tem uma maioria de dados faltantes;\n38 - 2024 Folheiro_009-01: a amostra 10232628 possui uma grande quantidade de dados faltantes e uma mudança brusca em sua última medição;\n39 - 2024 Folheiro_005-01: a 10232614 possui uma grande quantidade de dados faltantes em suas primeiras medições;\n36 - 2024 Jambeiro VII_008-01: a amostra 5 possui apenas 3 observações;\n37 - 2024 Boleira_007-01: as amostra 8939, 8941 e 8942 possui diversas medições faltantes antes de 19/04/2024 e a amostra 8938 possui apenas duas medições.\n\n\n\n22 - 2024 Jatobá 007-0123 - 2024 Sapucaia III_031-0124 - 2024 Jenipapo_002-0125 - 2024 Juerana II_023-0126 - 2024 Cinco Folhas_004-0127 - 2024 Sucupira_019-0128 - 2024 Liberdade IV_031-0129 - 2024 Jitai_048-0130 - 2024 Buri_004-0131 - 2024 Jequitibá_005-0132 - 2024 Patí_034-0133 - 2024 Fidalgo_002-0138 - 2024 Folheiro_009-0139 - 2024 Folheiro_005-0136 - 2024 Jambeiro VII_008-0137 - 2024 Boleira_007-01"
+    "text": "Periodicidade\nA fim de analisar a periodicidade dos dados dendrométricos coletados pelos sensores, os gráficos a seguir podem ser utilizados para observar as frequências segregadas por estrato. Visto que o período previsto de coleta é de três dias entre medições, é evidente que o estrato 22 - 2024 Jatobá 007-01 dispõe do comportamento mais anômalo em questão da frequência de coleta em campo.\nEntre outros estratos com comportamentos irregulares, estão:\n\n24 - 2024 Jenipapo_002-01: a amostra 2522 está tem uma maioria de dados faltantes;\n38 - 2024 Folheiro_009-01: a amostra 10232628 possui uma grande quantidade de dados faltantes e uma mudança brusca em sua última medição;\n39 - 2024 Folheiro_005-01: a 10232614 possui uma grande quantidade de dados faltantes em suas primeiras medições;\n36 - 2024 Jambeiro VII_008-01: a amostra 5 possui apenas 3 observações;\n37 - 2024 Boleira_007-01: as amostra 8939, 8941 e 8942 possui diversas medições faltantes antes de 19/04/2024 e a amostra 8938 possui apenas duas medições.\n\n\n\nJatobá 007-01Sapucaia III_031-01Jenipapo_002-01Juerana II_023-01Cinco Folhas_004-01Sucupira_019-01Liberdade IV_031-01Jitai_048-01Buri_004-01Jequitibá_005-01Patí_034-01Fidalgo_002-01Folheiro_009-01Folheiro_005-01Jambeiro VII_008-01Boleira_007-01"
   },
   {
-    "objectID": "report.html#datas-irregulares",
-    "href": "report.html#datas-irregulares",
+    "objectID": "report.html#sec-data",
+    "href": "report.html#sec-data",
     "title": "Análise de Sensores IoTs - Veracel",
     "section": "Datas irregulares",
     "text": "Datas irregulares\nA Tabela 1 demonstra os estratos, amostras e respectivos dispositivos com medições com datas de medições irregulares (ocorreram fora de 2024). As amostras com problemáticas podem ser observadas nos gráficos da Seção 2.\n\n\n\n\n\nTabela 1: Datas irregulares\n\n\n\n\n\n\n\n\n\nFazenda\nEstrato\nAmostra\nMAC\nN° de Datas irregulares\n\n\n\n\n47 - 2024 Folheiro\n38 - 2024 Folheiro_009-01\n10232628\nC00C1D0004DF\n14\n\n\n49 - 2024 Boleira_007-01\n37 - 2024 Boleira_007-01\n8938\nC00C1D000F82\n30"
   },
   {
-    "objectID": "report.html#outliers-e-falhas",
-    "href": "report.html#outliers-e-falhas",
-    "title": "Análise de Sensores IoTs - Veracel",
-    "section": "Outliers e Falhas",
-    "text": "Outliers e Falhas\nOs gaps e falhas operacionais são detectados são detectados a partir do agrupamento dos dados de medições por estratos e amostras. Os gaps são contabilizados por meio da contagem de lacunas maiores ou iguais a 4 dias nas séries temporais de cada amostra.\nOs outliers são detectados utilizando a metodologia de análise de séries temporais descrita em Hyndman (2021) para detecção de anomalias, implementada em linguagem R no pacote forecast. A Tabela 2 demonstra os resultados:\n\n\n\n\n\nTabela 2: Outliers e gaps"
-  },
-  {
-    "objectID": "report.html#desempenho",
-    "href": "report.html#desempenho",
-    "title": "Análise de Sensores IoTs - Veracel",
-    "section": "Desempenho",
-    "text": "Desempenho"
-  },
-  {
-    "objectID": "report.html#distribuição",
-    "href": "report.html#distribuição",
+    "objectID": "report.html#sec-distri",
+    "href": "report.html#sec-distri",
     "title": "Análise de Sensores IoTs - Veracel",
     "section": "Distribuição",
-    "text": "Distribuição"
+    "text": "Distribuição\nNa Figura 2, o boxplot mostra a distribuição dos DAPs das amostras em função dos estratos, enquanto o gráfico de densidade apresenta a distribuição contínua dos tempos de operação dos sensores.\nEm sua grande maioria, os estratos se dispõem normalmente distribuídos, com alguns outliers pontuais visíveis. Já no gráfico de densidade, vê-se um comportamento normal com tendência a aproximadamente 150 dias de operação. Em contraposto, têm-se a presença de uma flutuação na densidade ao redor de 80 dias, o que indica uma troca de dendrômetros.\n\n\n\n\n\n\n\n\n\nFigura 2: Distribuição de DAP e de tempos de operação"
+  },
+  {
+    "objectID": "report.html#sec-gap",
+    "href": "report.html#sec-gap",
+    "title": "Análise de Sensores IoTs - Veracel",
+    "section": "Outliers e Falhas",
+    "text": "Outliers e Falhas\nOs gaps e falhas operacionais são detectados são detectados a partir do agrupamento dos dados de medições por estratos e amostras. Os gaps são contabilizados por meio da contagem de lacunas maiores ou iguais a 4 dias nas séries temporais de cada amostra.\nOs outliers são detectados utilizando a metodologia de análise de séries temporais descrita em Hyndman (2021) para detecção de anomalias, implementada em linguagem R no pacote forecast. A Tabela 2 demonstra os resultados:\n\n\n\n\n\nTabela 2: Outliers e gaps\n\n\n\n\n\n\n\n\n\n\n\nNota-se que os outliers temporais observados nesta seção são distinos dos citados na Seção 4, já que àqueles são outliers globais, pois destoam da média dos DAPs, enquanto os outliers temporais são contextuais, no sentido que são valores anômalos apenas no contexto da tendência das séries temporais de medidas."
+  },
+  {
+    "objectID": "report.html#sec-complete",
+    "href": "report.html#sec-complete",
+    "title": "Análise de Sensores IoTs - Veracel",
+    "section": "Completude",
+    "text": "Completude\nA completude dos dados de coleta pode ser analisada por meio da fig-complete, que indica o número de total de medições aferidas em cada estrato e o total de medições esperadas para o intervalo de coleta de três dias. Apesar da ausência de uma quantidade perceptível de dados, as coletas obtiveram um desempenho amplamente satisfatório.\n\n\n\n\n\n\n\n\n\nFigura 3: Número de medições reais e esperadas"
   }
 ]

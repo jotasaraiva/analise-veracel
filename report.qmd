@@ -2,8 +2,8 @@
 title: Análise de Sensores IoTs - Veracel
 description: Análise de desempenho de dendrômetros IoTs para Veracel
 author: 
-  - name: Equipe de Sustentação
-    affiliation: Treevia Forest Technologies
+  - name: João Saraiva
+    affiliation: Equipe de Sustentação - Treevia Forest Technologies
 date: last-modified
 title-block-banner: true
 title-block-banner-color: "#3D7A43"
@@ -39,7 +39,7 @@ df <-
 ```
 
 
-## Distribuição espacial
+## Distribuição espacial {#sec-geo}
 
 A companhia Veracel Celulose, como cliente da Treevia Forest Technologies, possui atualmente `r length(unique(df$Plantio))` plantios e `r length(unique(df$Id_Amostra))` amostras operantes em seu projeto. A localização geográfica das amostras está demonstrada na @fig-map.
 
@@ -88,7 +88,7 @@ Entre outros estratos com comportamentos irregulares, estão:
 estratos <- unique(df$Estrato)
 
 for(i in estratos) {
-  cat("##",i, "\n\n\n")
+  cat("##", str_sub(i, 11), "\n\n\n")
   
   print(tagList(ggplotly(plot_estratos(df, i), tooltip = "text")))
   
@@ -99,7 +99,7 @@ for(i in estratos) {
 :::
 :::
 
-## Datas irregulares
+## Datas irregulares {#sec-data}
 
 A @tbl-dates demonstra os estratos, amostras e respectivos dispositivos com medições com datas de medições irregulares (ocorreram fora de 2024). As amostras com problemáticas podem ser observadas nos gráficos da @sec-period.
 
@@ -120,93 +120,20 @@ df |>
 ```
 :::
 
-## Outliers e Falhas
+## Distribuição {#sec-distri}
 
-Os *gaps* e falhas operacionais são detectados são detectados a partir do agrupamento dos dados de medições por estratos e amostras. Os *gaps* são contabilizados por meio da contagem de lacunas maiores ou iguais a 4 dias nas séries temporais de cada amostra.
+Na @fig-boxdens, o boxplot mostra a distribuição dos DAPs das amostras em função dos estratos, enquanto o gráfico de densidade apresenta a distribuição contínua dos tempos de operação dos sensores.
 
-Os *outliers* são detectados utilizando a metodologia de análise de séries temporais descrita em @hyndman2021 para detecção de anomalias, implementada em linguagem R no pacote [`forecast`](https://pkg.robjhyndman.com/forecast/reference/tsoutliers.html). A @tbl-gaps demonstra os resultados:
-
-:::{.column-body-outset}
-
-```{r}
-#| warning: false
-#| tbl-cap: Outliers e gaps
-#| label: tbl-gaps
-
-gaps <-
-  df |> 
-  filter(year(Data_Medicao) == 2024) |> 
-  group_by(Fazenda, Amostra) |> 
-  arrange(Data_Medicao) |> 
-  mutate(gap = as.numeric(Data_Medicao - lag(Data_Medicao)),
-         is.gap = if_else(gap >= 4, T, F)) |> 
-  summarise(gaps = sum(is.gap, na.rm = T))
-
-liers <-
-  df |>
-  filter(year(Data_Medicao) == 2024) |>
-  group_by(Fazenda, Amostra) |>
-  arrange(`DAP (cm)`) |>
-  summarise(nliers = length(tsoutliers(`DAP (cm)`)$index)) |>
-  ungroup()
-
-full_join(liers, gaps, by = c("Fazenda" = "Fazenda", "Amostra" = "Amostra")) |> 
-  mutate(across(c(Amostra, Fazenda), as.factor)) |> 
-  rename("N° de Outliers" = nliers, "N° de Gaps" = gaps) |> 
-  DT::datatable(class = "cell-border stripe", 
-                filter = list(position = "top", clear = F))
-```
-
-:::
-
-## Desempenho
-
-::: {.column-body-outset}
-
-```{r}
-indic <-
-  df |> 
-  filter(Data_Medicao >= "2024-05-01" & Data_Medicao <= today()) |> 
-  group_by(Estrato, Amostra) |> 
-  summarise(
-    medicoes = n(),
-    esperado = round(as.numeric(today() - min(Data_Medicao))/3)
-  ) |> 
-  ungroup()
-  
-barplot <-
-  indic |> 
-  summarise(
-    .by = Estrato, 
-    real = sum(medicoes), 
-    exp = sum(esperado)
-  ) |> 
-  rename("Esperado" = exp, "Real" = real) |> 
-  pivot_longer(-Estrato) |> 
-  ggplot(aes(value, reorder(Estrato, value), fill = name)) +
-  geom_col(
-    position = "dodge",
-    alpha = 0.75,
-    aes(text = sprintf("%s<br>N° de Medições: %d", name, value))
-  ) +
-  labs(fill = NULL, x = "N° de Medições", y = NULL) +
-  scale_fill_manual(values = c("lightgreen", "darkgreen")) +
-  theme_minimal()
-
-bar_ly <- ggplotly(barplot, tooltip = "text")
-
-bar_ly
-```
-
-:::
-
-## Distribuição
+Em sua grande maioria, os estratos se dispõem normalmente distribuídos, com alguns *outliers* pontuais visíveis. Já no gráfico de densidade, vê-se um comportamento normal com tendência a aproximadamente 150 dias de operação. Em contraposto, têm-se a presença de uma flutuação na densidade ao redor de 80 dias, o que indica uma troca de dendrômetros.
 
 :::{.column-body-outset}
 ```{r}
+#| label: fig-boxdens
+#| fig-cap: Distribuição de DAP e de tempos de operação
+
 box <-  
   df |> 
-  filter(Data_Medicao >= "2024-05-01" & Data_Medicao <= today()) |> 
+  filter(year(Data_Medicao) == 2024) |> 
   ggplot(aes(reorder(Estrato, `DAP (cm)`), `DAP (cm)`)) +
   geom_boxplot(color = "darkgreen", alpha = 0) +
   coord_flip() +
@@ -233,8 +160,10 @@ dens <-
     aes(
       x = idade,
       y = after_stat(density),
-      text = sprintf("Densidade: %.2f%%<br>Tempor de Operação: %.2f dias",
-                     after_stat(density) * 100, x)
+      text = sprintf(
+        "Densidade: %.2f%%<br>Tempo de Operação: %.2f dias",
+        after_stat(density) * 100, x
+      )
     )
   ) +
   scale_y_continuous(labels = scales::percent) +
@@ -243,7 +172,96 @@ dens <-
 
 dens_ly <- ggplotly(dens, tooltip = "text")
 
-subplot(box_ly, dens_ly,nrows = 1, margin = 0.07)
+subplot(box_ly, dens_ly,nrows = 1, margin = 0.05)
 ```
 
 :::
+
+## Outliers e Falhas {#sec-gap}
+
+Os *gaps* e falhas operacionais são detectados são detectados a partir do agrupamento dos dados de medições por estratos e amostras. Os *gaps* são contabilizados por meio da contagem de lacunas maiores ou iguais a 4 dias nas séries temporais de cada amostra.
+
+Os outliers são detectados utilizando a metodologia de análise de séries temporais descrita em @hyndman2021 para detecção de anomalias, implementada em linguagem R no pacote [`forecast`](https://pkg.robjhyndman.com/forecast/reference/tsoutliers.html). A @tbl-gaps demonstra os resultados:
+
+:::{.column-body-outset}
+
+```{r}
+#| warning: false
+#| tbl-cap: Outliers e gaps
+#| label: tbl-gaps
+
+gaps <-
+  df |> 
+  filter(year(Data_Medicao) == 2024) |> 
+  group_by(Fazenda, Amostra) |> 
+  arrange(Data_Medicao) |> 
+  mutate(gap = as.numeric(Data_Medicao - lag(Data_Medicao)),
+         is.gap = if_else(gap >= 4, T, F)) |> 
+  summarise(gaps = sum(is.gap, na.rm = T))
+
+liers <-
+  df |>
+  filter(year(Data_Medicao) == 2024) |>
+  group_by(Fazenda, Amostra) |>
+  arrange(`DAP (cm)`) |>
+  summarise(nliers = length(tsoutliers(`DAP (cm)`)$index)) |>
+  ungroup()
+
+full_join(liers, gaps, by = c("Fazenda" = "Fazenda", "Amostra" = "Amostra")) |> 
+  mutate(Fazenda = str_remove_all(Fazenda, c(" |_|-|[0-9]")),
+         across(c(Amostra, Fazenda), as.factor)) |> 
+  rename("N° de Outliers" = nliers, "N° de Gaps" = gaps) |> 
+  DT::datatable(class = "cell-border stripe", 
+                filter = list(position = "top", clear = F))
+```
+
+:::
+
+Nota-se que os outliers temporais observados nesta seção são distinos dos citados na @sec-distri, já que àqueles são outliers **globais**, pois destoam da média dos DAPs, enquanto os outliers temporais são **contextuais**, no sentido que são valores anômalos apenas no contexto da tendência das séries temporais de medidas.
+
+## Completude {#sec-complete}
+
+A completude dos dados de coleta pode ser analisada por meio da @fig-complete, que indica o número de total de medições aferidas em cada estrato e o total de medições esperadas para o intervalo de coleta de três dias. Apesar da ausência de uma quantidade perceptível de dados, as coletas obtiveram um desempenho amplamente satisfatório.
+
+::: {.column-body-outset}
+
+```{r}
+#| label: fig-complete
+#| fig-cap: Número de medições reais e esperadas
+
+indic <-
+  df |> 
+  filter(Data_Medicao >= "2024-05-01" & Data_Medicao <= today()) |> 
+  group_by(Estrato, Amostra) |> 
+  summarise(
+    medicoes = n(),
+    esperado = round(as.numeric(today() - min(Data_Medicao))/3)
+  ) |> 
+  ungroup()
+  
+bars <-
+  indic |> 
+  summarise(
+    .by = Estrato, 
+    real = sum(medicoes), 
+    exp = sum(esperado)
+  ) |> 
+  rename("Esperado" = exp, "Real" = real) |> 
+  pivot_longer(-Estrato) |>
+  ggplot(aes(value, reorder(Estrato, value), fill = name)) +
+  geom_col(
+    position = "dodge",
+    alpha = 0.75,
+    aes(text = sprintf("%s<br>N° de Medições: %d", name, value))
+  ) +
+  labs(fill = NULL, x = "N° de Medições", y = NULL) +
+  scale_fill_manual(values = c("lightgreen", "darkgreen")) +
+  theme_minimal()
+
+bar_ly <- ggplotly(bars, tooltip = "text")
+
+bar_ly
+```
+
+:::
+
