@@ -1,15 +1,22 @@
 
 plot_estratos <- function(df, estratos) {
-  plot <-
+  plot_data <-
     df |>
     filter(year(Data_Medicao) == 2024) |>
-    filter(Estrato == estratos) |>
+    filter(Estrato == estratos)
+  
+  mean_data <-
+    plot_data |> 
+    group_by(Data_Medicao) |> 
+    summarise(DAP.Med = mean(`DAP (cm)`, na.rm = T))
+  
+  plot <-
+    plot_data |> 
     mutate(Amostra = as.character(Amostra)) |> 
     ggplot(aes(Data_Medicao, `DAP (cm)`)) +
-    geom_line(aes(group = Amostra, color = Amostra), show.legend = F) +
+    geom_line(aes(color = Amostra), show.legend = F) +
     geom_point(
       aes(
-        group = Amostra,
         color = Amostra,
         text = sprintf(
           "Amostra: %s<br>MatGen: %d <br>Data: %s<br>MAC: %s<br>DAP (cm): %f<br>Altura (m): %f",
@@ -20,6 +27,20 @@ plot_estratos <- function(df, estratos) {
           `DAP (cm)`,
           `Altura (m)`
         )
+      ),
+      fill = "black",
+      stroke = 0.25,
+      shape = 21,
+      size = 1
+    ) +
+    geom_line(data = mean_data, aes(Data_Medicao, DAP.Med, color = "Média")) +
+    geom_point(
+      data = mean_data, 
+      aes(
+        Data_Medicao, 
+        DAP.Med, 
+        color = "Média",
+        text = sprintf("DAP Médio %.2f<br>Data: %s", DAP.Med, Data_Medicao)
       ),
       fill = "black",
       stroke = 0.25,

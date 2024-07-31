@@ -71,11 +71,11 @@ A fim de analisar a periodicidade dos dados dendrométricos coletados pelos sens
 
 Entre outros estratos com comportamentos irregulares, estão:
 
-- **`r unique(df$Estrato)[3]`**: a amostra 2522 está tem uma maioria de dados faltantes;
+- **`r unique(df$Estrato)[3]`**: a amostra 2522 possui a maioria de seus dados faltantes;
 - **`r unique(df$Estrato)[13]`**: a amostra 10232628 possui uma grande quantidade de dados faltantes e uma mudança brusca em sua última medição;
 - **`r unique(df$Estrato)[14]`**: a 10232614 possui uma grande quantidade de dados faltantes em suas primeiras medições;
 - **`r unique(df$Estrato)[15]`**: a amostra 5 possui apenas 3 observações;
-- **`r unique(df$Estrato)[16]`**: as amostra 8939, 8941 e 8942 possui diversas medições faltantes antes de 19/04/2024 e a amostra 8938 possui apenas duas medições.
+- **`r unique(df$Estrato)[16]`**: as amostra 8939, 8941 e 8942 possuem diversas medições faltantes antes de 19/04/2024 e a amostra 8938 possui apenas duas medições.
 
 
 :::{.column-page}
@@ -101,7 +101,7 @@ for(i in estratos) {
 
 ## Datas irregulares {#sec-data}
 
-A @tbl-dates demonstra os estratos, amostras e respectivos dispositivos com medições com datas de medições irregulares (ocorreram fora de 2024). As amostras com problemáticas podem ser observadas nos gráficos da @sec-period.
+A @tbl-dates demonstra os respectivos estratos, amostras e dispositivos onde foram coletadas medições com datasirregulares (ocorreram fora de 2024). As amostras problemáticas podem ser observadas nos gráficos da @sec-period.
 
 :::{.column-body-outset}
 ```{r}
@@ -161,7 +161,7 @@ dens <-
       x = idade,
       y = after_stat(density),
       text = sprintf(
-        "Densidade: %.2f%%<br>Tempo de Operação: %.2f dias",
+        "Densidade: %.2f%%<br>Tempo de Operação do Sensor: %.2f dias",
         after_stat(density) * 100, x
       )
     )
@@ -172,14 +172,14 @@ dens <-
 
 dens_ly <- ggplotly(dens, tooltip = "text")
 
-subplot(box_ly, dens_ly,nrows = 1, margin = 0.05)
+subplot(box_ly, dens_ly,nrows = 1, margin = 0.05, titleX = T)
 ```
 
 :::
 
 ## Outliers e Falhas {#sec-gap}
 
-Os *gaps* e falhas operacionais são detectados são detectados a partir do agrupamento dos dados de medições por estratos e amostras. Os *gaps* são contabilizados por meio da contagem de lacunas maiores ou iguais a 4 dias nas séries temporais de cada amostra.
+Os *gaps* e falhas operacionais são detectados a partir do agrupamento dos dados de medições por estratos e amostras. Os *gaps* são contabilizados por meio da contagem de lacunas maiores ou iguais a 4 dias nas séries temporais de cada amostra.
 
 Os outliers são detectados utilizando a metodologia de análise de séries temporais descrita em @hyndman2021 para detecção de anomalias, implementada em linguagem R no pacote [`forecast`](https://pkg.robjhyndman.com/forecast/reference/tsoutliers.html). A @tbl-gaps demonstra os resultados:
 
@@ -217,7 +217,7 @@ full_join(liers, gaps, by = c("Fazenda" = "Fazenda", "Amostra" = "Amostra")) |>
 
 :::
 
-Nota-se que os outliers temporais observados nesta seção são distinos dos citados na @sec-distri, já que àqueles são outliers **globais**, pois destoam da média dos DAPs, enquanto os outliers temporais são **contextuais**, no sentido que são valores anômalos apenas no contexto da tendência das séries temporais de medidas.
+Nota-se que os outliers temporais observados nesta seção são distinos dos citados na @sec-distri, já que àqueles são outliers **globais**, pois destoam da média dos DAPs, enquanto os outliers temporais são **contextuais**, ou seja, são valores anômalos apenas no contexto da tendência das séries temporais de medidas.
 
 ## Completude {#sec-complete}
 
