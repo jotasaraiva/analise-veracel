@@ -101,7 +101,7 @@ for(i in estratos) {
 
 ## Datas irregulares {#sec-data}
 
-A @tbl-dates demonstra os respectivos estratos, amostras e dispositivos onde foram coletadas medições com datasirregulares (ocorreram fora de 2024). As amostras problemáticas podem ser observadas nos gráficos da @sec-period.
+A @tbl-dates demonstra os respectivos estratos, amostras e dispositivos onde foram coletadas medições com datas irregulares (ocorreram fora de 2024). As amostras problemáticas podem ser observadas nos gráficos da @sec-period.
 
 :::{.column-body-outset}
 ```{r}

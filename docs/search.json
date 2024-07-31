@@ -25,7 +25,7 @@
     "href": "report.html#sec-data",
     "title": "Análise de Sensores IoTs - Veracel",
     "section": "Datas irregulares",
-    "text": "Datas irregulares\nA Tabela 1 demonstra os respectivos estratos, amostras e dispositivos onde foram coletadas medições com datasirregulares (ocorreram fora de 2024). As amostras problemáticas podem ser observadas nos gráficos da Seção 2.\n\n\n\n\n\nTabela 1: Datas irregulares\n\n\n\n\n\n\n\n\n\nFazenda\nEstrato\nAmostra\nMAC\nN° de Datas irregulares\n\n\n\n\n47 - 2024 Folheiro\n38 - 2024 Folheiro_009-01\n10232628\nC00C1D0004DF\n14\n\n\n49 - 2024 Boleira_007-01\n37 - 2024 Boleira_007-01\n8938\nC00C1D000F82\n30"
+    "text": "Datas irregulares\nA Tabela 1 demonstra os respectivos estratos, amostras e dispositivos onde foram coletadas medições com datas irregulares (ocorreram fora de 2024). As amostras problemáticas podem ser observadas nos gráficos da Seção 2.\n\n\n\n\n\nTabela 1: Datas irregulares\n\n\n\n\n\n\n\n\n\nFazenda\nEstrato\nAmostra\nMAC\nN° de Datas irregulares\n\n\n\n\n47 - 2024 Folheiro\n38 - 2024 Folheiro_009-01\n10232628\nC00C1D0004DF\n14\n\n\n49 - 2024 Boleira_007-01\n37 - 2024 Boleira_007-01\n8938\nC00C1D000F82\n30"
   },
   {
     "objectID": "report.html#sec-distri",
